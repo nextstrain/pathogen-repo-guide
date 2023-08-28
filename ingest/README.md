@@ -14,3 +14,21 @@ The config directory contains all of the default configurations for the ingest w
 [config/defaults.yaml](config/defaults.yaml) contains all of the default configuration parameters
 used for the ingest workflow. Use Snakemake's `--configfile`/`--config`
 options to override these default values.
+
+## Vendored
+
+This repository uses [`git subrepo`](https://github.com/ingydotnet/git-subrepo)
+to manage copies of ingest scripts in [vendored](vendored), from [nextstrain/ingest](https://github.com/nextstrain/ingest).
+
+To pull new changes from the central ingest repository, first install `git subrepo`,
+then from the top level directory of the repo run:
+
+```sh
+git subrepo pull ingest/vendored
+```
+
+Changes should not be pushed using `git subrepo push`.
+
+1. For pathogen-specific changes, make them in this repository via a pull request.
+2. For pathogen-agnostic changes, make them on [nextstrain/ingest](https://github.com/nextstrain/ingest)
+   via pull request there, then use `git subrepo pull` to add those changes to this repository.
