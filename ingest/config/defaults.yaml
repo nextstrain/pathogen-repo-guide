@@ -6,3 +6,11 @@
 
 # Required to fetch from Entrez
 entrez_search_term: ""
+
+# Required to fetch from NCBI Virus
+ncbi_taxon_id: ""
+
+# Optional filters to filter records on the NCBI Virus server
+ncbi_virus_filters: []
+# Optional fields to add to the NCBI Virus output
+ncbi_virus_fields: []
