@@ -12,3 +12,10 @@ The config directory contains all of the default configurations for the Nextclad
 [config/defaults.yaml](config/defaults.yaml) contains all of the default configuration parameters
 used for the Nextclade workflow. Use Snakemake's `--configfile`/`--config`
 options to override these default values.
+
+## Snakefile and rules
+
+The rules directory contains separate Snakefiles (`*.smk`) as modules of the core Nextclade workflow.
+The modules of the workflow are in separate files to keep the main ingest [Snakefile](Snakefile) succinct and organized.
+Modules are all [included](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#includes)
+in the main Snakefile in the order that they are expected to run.
