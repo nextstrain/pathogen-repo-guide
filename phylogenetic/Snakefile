@@ -1,0 +1,12 @@
+# Use default configuration values. Override with Snakemake's --configfile/--config options.
+configfile: "config/defaults.yaml"
+
+rule all:
+    input:
+        # Fill in path to the final exported Auspice JSON
+        auspice_json = ""
+
+include: "rules/prepare_sequences.smk"
+include: "rules/construct_phylogeny.smk"
+include: "rules/annotate_phylogeny.smk"
+include: "rules/export.smk"
