@@ -12,3 +12,47 @@ ncbi_taxon_id: ""
 
 # Optional fields to add to the NCBI Datasets output
 ncbi_dataset_fields: []
+
+# Config parameters related to the curate pipeline
+curate:
+  # URL pointed to public generalized geolocation rules
+  # For the Nextstrain team, this is currently
+  # 'https://raw.githubusercontent.com/nextstrain/ncov-ingest/master/source-data/gisaid_geoLocationRules.tsv'
+  geolocation_rules_url: ""
+  # The path to the local geolocation rules within the pathogen repo
+  # The path should be relative to the ingest directory.
+  local_geolocation_rules: "config/geolocation_rules.tsv"
+  # List of field names to change in the format of <old_field_name>=<new_field_name>
+  # This is the first step in the pipeline, so any references to field names
+  # in the configs below should use the new field names
+  field_map: []
+  # List of date fields to standardize to ISO format YYYY-MM-DD
+  date_fields: []
+  # List of expected date formats that are present in the date fields provided above
+  # These date formats should use directives expected by datetime
+  # See https://docs.python.org/3.9/library/datetime.html#strftime-and-strptime-format-codes
+  expected_date_formats: []
+  titlecase:
+    # List of string fields to titlecase
+    fields: []
+    # List of abbreviations not cast to titlecase, keeps uppercase
+    abbreviations: []
+    # Articles that should not be cast to titlecase
+    articles: []
+  # Metadata field that contains the list of authors associated with the sequence
+  authors_field: ""
+  # Default value to use if the authors field is empty
+  authors_default_value: ""
+  # Name to use for the generated abbreviated authors field
+  abbr_authors_field: ""
+  # Path to the manual annotations file
+  # The path should be relative to the ingest directory
+  annotations: "config/annotations.tsv"
+  # The ID field in the metadata to use to merge the manual annotations
+  annotations_id: ""
+  # The ID field in the metadata to use as the sequence id in the output FASTA file
+  output_id_field: ""
+  # The field in the NDJSON record that contains the actual genomic sequence
+  output_seq_field: ""
+  # The list of metadata columns to keep in the final output of the curation pipeline.
+  metadata_columns: []
