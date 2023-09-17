@@ -53,6 +53,6 @@ curate:
   # The ID field in the metadata to use as the sequence id in the output FASTA file
   output_id_field: ""
   # The field in the NDJSON record that contains the actual genomic sequence
-  output_seq_field: ""
+  output_sequence_field: ""
   # The list of metadata columns to keep in the final output of the curation pipeline.
   metadata_columns: []

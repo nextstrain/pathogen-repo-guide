@@ -96,11 +96,11 @@ rule curate:
 
 rule subset_metadata:
     input:
-        metadata: "results/all_metadata.tsv"
+        metadata="results/all_metadata.tsv"
     output:
-        subset_metadata: "results/subset_metadata.tsv"
+        subset_metadata="results/subset_metadata.tsv"
     params:
-        metadata_fields: config["curate"]["metadata_columns"]
+        metadata_fields=config["curate"]["metadata_columns"]
     shell:
         """
         tsv-select -H -f {params.metadata_fields} \
