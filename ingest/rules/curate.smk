@@ -6,30 +6,33 @@ from NCBI and outputs the clean data as two separate files:
     - results/sequences.fasta
 """
 
+
 # The following two rules can be ignored if you choose not to use the
 # generalized geolocation rules that are shared across pathogens.
 # The Nextstrain team will try to maintain a generalized set of geolocation
 # rules that can then be overridden by local geolocation rules per pathogen repo.
 rule fetch_general_geolocation_rules:
     output:
-        general_geolocation_rules = "data/general-geolocation-rules.tsv"
+        general_geolocation_rules="data/general-geolocation-rules.tsv",
     params:
-        geolocation_rules_url = config["curate"]["geolocation_rules_url"]
+        geolocation_rules_url=config["curate"]["geolocation_rules_url"],
     shell:
         """
         curl {params.geolocation_rules_url} > {output.general_geolocation_rules}
         """
 
+
 rule concat_geolocation_rules:
     input:
-        general_geolocation_rules = "data/general-geolocation-rules.tsv",
-        local_geolocation_rules = config["curate"]["local_geolocation_rules"]
+        general_geolocation_rules="data/general-geolocation-rules.tsv",
+        local_geolocation_rules=config["curate"]["local_geolocation_rules"],
     output:
-        all_geolocation_rules = "data/all-geolocation-rules.tsv"
+        all_geolocation_rules="data/all-geolocation-rules.tsv",
     shell:
         """
         cat {input.general_geolocation_rules} {input.local_geolocation_rules} >> {output.all_geolocation_rules}
         """
+
 
 # This curate pipeline is based on existing pipelines for pathogen repos using NCBI data.
 # You may want to add and/or remove steps from the pipeline for custom metadata
@@ -40,15 +43,15 @@ rule concat_geolocation_rules:
 # separate files: a metadata TSV and a sequences FASTA.
 rule curate:
     input:
-        sequences_ndjson = "data/ncbi.ndjson",
+        sequences_ndjson="data/ncbi.ndjson",
         # Change the geolocation_rules input path if you are removing the above two rules
-        all_geolocation_rules = "data/all-geolocation-rules.tsv",
-        annotations = config["curate"]["annotations"]
+        all_geolocation_rules="data/all-geolocation-rules.tsv",
+        annotations=config["curate"]["annotations"],
     output:
-        metadata = "results/all_metadata.tsv",
-        sequences = "results/sequences.fasta"
+        metadata="results/all_metadata.tsv",
+        sequences="results/sequences.fasta",
     log:
-        "logs/curate.txt"
+        "logs/curate.txt",
     benchmark:
         "benchmarks/curate.txt"
     params:
@@ -94,13 +97,14 @@ rule curate:
                 --output-seq-field {params.sequence_field} ) 2>> {log}
         """
 
+
 rule subset_metadata:
     input:
-        metadata="results/all_metadata.tsv"
+        metadata="results/all_metadata.tsv",
     output:
-        subset_metadata="results/subset_metadata.tsv"
+        subset_metadata="results/subset_metadata.tsv",
     params:
-        metadata_fields=config["curate"]["metadata_columns"]
+        metadata_fields=config["curate"]["metadata_columns"],
     shell:
         """
         tsv-select -H -f {params.metadata_fields} \
