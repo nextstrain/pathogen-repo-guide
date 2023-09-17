@@ -8,13 +8,13 @@ Choose the one that works best for the pathogen data and remove the rules relate
 to the other approaches.
 
 1. Fetch from Entrez (https://www.ncbi.nlm.nih.gov/books/NBK25501/)
-    - Returns all avaiable data via a GenBank file
+    - Returns all available data via a GenBank file
     - Requires a custom script to parse the necessary fields from the GenBank file
 
 2. Fetch with NCBI Datasets (https://www.ncbi.nlm.nih.gov/datasets/)
     - Directly returns NDJSON without custom parsing
     - Fastest option for large datasets (e.g. SARS-CoV-2)
-    - Only returns metadata fields that are avaiable through NCBI Datasets
+    - Only returns metadata fields that are available through NCBI Datasets
     - Example is written for viral data, please see offical NCBI Datasets docs for other genomes
 """
 
