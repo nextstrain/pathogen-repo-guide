@@ -22,11 +22,12 @@ to the other approaches.
 ########################## 1. Fetch from Entrez ###########################
 ###########################################################################
 
+
 rule fetch_from_ncbi_entrez:
     params:
-        term = config["entrez_search_term"]
+        term=config["entrez_search_term"],
     output:
-        genbank = "data/genbank.gb"
+        genbank="data/genbank.gb",
     # Allow retries in case of network errors
     retries: 5
     benchmark:
@@ -41,9 +42,9 @@ rule fetch_from_ncbi_entrez:
 
 rule parse_genbank_to_ndjson:
     input:
-        genbank = "data/genbank.gb"
+        genbank="data/genbank.gb",
     output:
-        ndjson = "data/ncbi.ndjson"
+        ndjson="data/ncbi.ndjson",
     benchmark:
         "benchmarks/parse_genbank_to_ndjson.txt"
     shell:
@@ -56,11 +57,12 @@ rule parse_genbank_to_ndjson:
 ####################### 2. Fetch from NCBI Datasets #######################
 ###########################################################################
 
+
 rule fetch_ncbi_dataset_package:
     params:
-        ncbi_taxon_id = config["ncbi_taxon_id"],
+        ncbi_taxon_id=config["ncbi_taxon_id"],
     output:
-        dataset_package = temp("data/ncbi_dataset.zip")
+        dataset_package=temp("data/ncbi_dataset.zip"),
     # Allow retries in case of network errors
     retries: 5
     benchmark:
@@ -75,9 +77,9 @@ rule fetch_ncbi_dataset_package:
 
 rule extract_ncbi_dataset_sequences:
     input:
-        dataset_package = "data/ncbi_dataset.zip"
+        dataset_package="data/ncbi_dataset.zip",
     output:
-        ncbi_dataset_sequences = temp("data/ncbi_dataset_sequences.fasta")
+        ncbi_dataset_sequences=temp("data/ncbi_dataset_sequences.fasta"),
     benchmark:
         "benchmarks/extract_ncbi_dataset_sequences.txt"
     shell:
@@ -122,11 +124,13 @@ def _get_ncbi_dataset_field_mnemonics(provided_fields: list) -> str:
 
 rule format_ncbi_dataset_report:
     input:
-        dataset_package = "data/ncbi_dataset.zip"
+        dataset_package="data/ncbi_dataset.zip",
     output:
-        ncbi_dataset_tsv = temp("data/ncbi_dataset_report.tsv")
+        ncbi_dataset_tsv=temp("data/ncbi_dataset_report.tsv"),
     params:
-        fields_to_include = _get_ncbi_dataset_field_mnemonics(config["ncbi_dataset_fields"])
+        fields_to_include=_get_ncbi_dataset_field_mnemonics(
+            config["ncbi_dataset_fields"]
+        ),
     benchmark:
         "benchmarks/format_ncbi_dataset_report.txt"
     shell:
@@ -144,12 +148,12 @@ rule format_ncbi_dataset_report:
 # data that we host on data.nextstrain.org
 rule format_ncbi_datasets_ndjson:
     input:
-        ncbi_dataset_sequences = "data/ncbi_dataset_sequences.fasta",
-        ncbi_dataset_tsv = "data/ncbi_dataset_report.tsv",
+        ncbi_dataset_sequences="data/ncbi_dataset_sequences.fasta",
+        ncbi_dataset_tsv="data/ncbi_dataset_report.tsv",
     output:
-        ndjson = "data/ncbi.ndjson",
+        ndjson="data/ncbi.ndjson",
     log:
-        "logs/format_ncbi_datasets_ndjson.txt"
+        "logs/format_ncbi_datasets_ndjson.txt",
     benchmark:
         "benchmarks/format_ncbi_datasets_ndjson.txt"
     shell:
