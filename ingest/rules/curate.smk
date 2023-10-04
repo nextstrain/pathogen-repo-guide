@@ -104,7 +104,7 @@ rule subset_metadata:
     output:
         subset_metadata="results/subset_metadata.tsv",
     params:
-        metadata_fields=config["curate"]["metadata_columns"],
+        metadata_fields=",".join(config["curate"]["metadata_columns"]),
     shell:
         """
         tsv-select -H -f {params.metadata_fields} \
