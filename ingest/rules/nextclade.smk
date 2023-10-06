@@ -58,6 +58,7 @@ rule join_metadata_and_nextclade:
         metadata="results/metadata.tsv",
     params:
         metadata_id_field=config["curate"]["output_id_field"],
+        nextclade_id_field=config["nextclade"]["id_field"],
     shell:
         """
         export SUBSET_FIELDS=`awk 'NR>1 {{print $1}}' {input.nextclade_field_map} | grep -v '^#' | tr '\n' ',' | sed 's/,$//g'`
@@ -72,11 +73,11 @@ rule join_metadata_and_nextclade:
             -k {input.nextclade_field_map} \
         | tsv-join -H \
             --filter-file - \
-            --key-fields seqName \
+            --key-fields {params.nextclade_id_field} \
             --data-fields {params.metadata_id_field} \
             --append-fields '*' \
             --write-all ? \
             {input.metadata} \
-        | tsv-select -H --exclude seqName \
+        | tsv-select -H --exclude {params.nextclade_id_field} \
             > {output.metadata}
         """
