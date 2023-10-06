@@ -4,3 +4,6 @@ configfile: "config/defaults.yaml"
 
 include: "rules/fetch_from_ncbi.smk"
 include: "rules/curate.smk"
+
+if "nextclade" in config:
+    include: "rules/nextclade.smk"
