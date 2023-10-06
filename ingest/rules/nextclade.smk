@@ -48,3 +48,35 @@ rule run_nextclade:
         zip -rj {output.translations} results/translations
         """
 
+
+rule join_metadata_and_nextclade:
+    input:
+        nextclade="results/nextclade.tsv",
+        metadata="results/subset_metadata.tsv",
+        nextclade_field_map=config["nextclade"]["field_map"],
+    output:
+        metadata="results/metadata.tsv",
+    params:
+        metadata_id_field=config["curate"]["output_id_field"],
+    shell:
+        """
+        export SUBSET_FIELDS=`awk 'NR>1 {{print $1}}' {input.nextclade_field_map} | grep -v '^#' | tr '\n' ',' | sed 's/,$//g'`
+
+        csvtk -tl cut -f $SUBSET_FIELDS \
+            {input.nextclade} \
+        | csvtk -tl rename2 \
+            -F \
+            -f '*' \
+            -p '(.+)' \
+            -r '{{kv}}' \
+            -k {input.nextclade_field_map} \
+        | tsv-join -H \
+            --filter-file - \
+            --key-fields seqName \
+            --data-fields {params.metadata_id_field} \
+            --append-fields '*' \
+            --write-all ? \
+            {input.metadata} \
+        | tsv-select -H --exclude seqName \
+            > {output.metadata}
+        """

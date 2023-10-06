@@ -82,3 +82,6 @@ nextclade:
   # The name of the Nextclade dataset to use for running nextclade.
   # Run `nextclade dataset list` to get a full list of available Nextclade datasets
   dataset_name: ""
+  # Path to the mapping for renaming Nextclade output columns
+  # The path should be relative to the ingest directory
+  field_map: "config/nextclade_field_map.tsv"
