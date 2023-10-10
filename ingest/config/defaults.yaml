@@ -22,10 +22,27 @@ curate:
   # The path to the local geolocation rules within the pathogen repo
   # The path should be relative to the ingest directory.
   local_geolocation_rules: "config/geolocation_rules.tsv"
-  # List of field names to change in the format of <old_field_name>=<new_field_name>
+  # List of field names to change where the key is the original field name and the value is the new field name
   # This is the first step in the pipeline, so any references to field names
   # in the configs below should use the new field names
-  field_map: []
+  # The examples below are based on the NCBI Datasets output TSV column names, your data might have different field names.
+  field_map:
+    Source database: database
+    Isolate Collection date: date
+    Release date: date_released
+    Update date: date_updated
+    Accession: accession
+    Isolate Lineage: strain
+    Geographic Region: region
+    Geographic Location: location
+    Submitter Names: authors
+    Submitter Affiliation: institution
+    SRA Accessions: sra_accessions
+    Length: length
+    Host Name: host
+    Isolate Lineage source: sample_type
+    BioSample accession: biosample_accession
+    Submitter Country: submitter_country
   # List of date fields to standardize to ISO format YYYY-MM-DD
   date_fields: []
   # List of expected date formats that are present in the date fields provided above
