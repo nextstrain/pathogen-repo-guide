@@ -7,6 +7,18 @@ If you have another data source or private data that needs to be formatted for
 the phylogenetic workflow, then you can use a similar workflow to curate your
 own data.
 
+## Run
+
+From within the `ingest` directory, run the workflow with:
+
+```
+nextstrain build .
+```
+
+This produces a `results` directory with the following outputs:
+- sequences.fasta
+- metadata.tsv
+
 ## Config
 
 The config directory contains all of the default configurations for the ingest workflow.
