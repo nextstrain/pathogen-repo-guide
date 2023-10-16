@@ -43,6 +43,11 @@ curate:
     Isolate Lineage source: sample_type
     BioSample accession: biosample_accession
     Submitter Country: submitter_country
+  # Standardized strain name regex
+  # Currently accepts any characters because we do not have a clear standard for strain names across pathogens
+  strain_regex: '^.+$'
+  # Back up strain name field to use if 'strain' doesn't match regex above
+  strain_backup_fields: ['accession']
   # List of date fields to standardize to ISO format YYYY-MM-DD
   date_fields: []
   # List of expected date formats that are present in the date fields provided above
