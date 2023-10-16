@@ -63,6 +63,8 @@ rule curate:
         "benchmarks/curate.txt"
     params:
         field_map=format_field_map(config["curate"]["field_map"]),
+        strain_regex=config["curate"]["strain_regex"],
+        strain_backup_fields=config["curate"]["strain_backup_fields"],
         date_fields=config["curate"]["date_fields"],
         expected_date_formats=config["curate"]["expected_date_formats"],
         articles=config["curate"]["titlecase"]["articles"],
@@ -80,6 +82,9 @@ rule curate:
             | ./vendored/transform-field-names \
                 --field-map {params.field_map} \
             | augur curate normalize-strings \
+            | ./vendored/transform-strain-names \
+                --strain-regex {params.strain_regex} \
+                --backup-fields {params.strain_backup_fields} \
             | augur curate format-dates \
                 --date-fields {params.date_fields} \
                 --expected-date-formats {params.expected_date_formats} \
