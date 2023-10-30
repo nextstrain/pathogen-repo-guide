@@ -61,7 +61,7 @@ rule join_metadata_and_nextclade:
         nextclade_id_field=config["nextclade"]["id_field"],
     shell:
         """
-        export SUBSET_FIELDS=`awk 'NR>1 {{print $1}}' {input.nextclade_field_map} | grep -v '^#' | tr '\n' ',' | sed 's/,$//g'`
+        export SUBSET_FIELDS=`grep -v '^#' {input.nextclade_field_map} | awk '{{print $1}}' | tr '\n' ',' | sed 's/,$//g'`
 
         csvtk -tl cut -f $SUBSET_FIELDS \
             {input.nextclade} \
