@@ -19,6 +19,11 @@ rule all:
         "results/metadata.tsv",
 
 
+# Note that only PATHOGEN level customizations should be added to these
+# core steps, meaning they are custom rules necessary for all builds of the pathogen.
+# If there are build specific customizations, they should be added with the
+# custom_rules imported below to ensure that the core workflow is not complicated
+# by build specific rules.
 include: "rules/fetch_from_ncbi.smk"
 include: "rules/curate.smk"
 
@@ -47,3 +52,18 @@ else:
             """
             mv {input.metadata} {output.metadata}
             """
+
+# Allow users to import custom rules provided via the config.
+# This allows users to run custom rules that can extend or override the workflow.
+# A concrete example of using custom rules is the extension of the workflow with
+# rules to support the Nextstrain automation that upload files and send internal
+# Slack notifications.
+# For extensions, the user will have to specify the custom rule targets when
+# running the workflow.
+# For overrides, the custom Snakefile will have to use the `ruleorder` directive
+# to allow Snakemake to handle ambiguous rules
+# https://snakemake.readthedocs.io/en/stable/snakefiles/rules.html#handling-ambiguous-rules
+if "custom_rules" in config:
+    for rule_file in config["custom_rules"]:
+
+        include: rule_file
