@@ -1,13 +1,28 @@
+"""
+This is the main phylogenetic Snakefile that orchestrates the full phylogenetic
+workflow and define its default output(s).
+"""
+
 # Use default configuration values. Override with Snakemake's --configfile/--config options.
 configfile: "config/defaults.yaml"
 
 
+# This is the default rule that Snakemake will run when there are no specified targets.
+# The default output of the phylogenetic workflow is usually the final
+# Nexstrain dataset(s) or Auspice JSON(s) that is output from `rules/export.smk`
+# See Nextstrain docs on expected naming conventions of dataset files
+# https://docs.nextstrain.org/page/reference/data-formats.html
 rule all:
     input:
-        # Fill in path to the final exported Auspice JSON
+        # Fill in path(s) to the final exported Auspice JSON(s)
         auspice_json="",
 
 
+# These rules are imported in the order that they are expected to run.
+# Each Snakefile will have documented inputs and outputs that should be kept as
+# consistent interfaces across pathogen repos. This allows us to define typical
+# steps that are required for a phylogenetic workflow, but still allow pathogen
+# specific customizations within each step.
 include: "rules/prepare_sequences.smk"
 include: "rules/construct_phylogeny.smk"
 include: "rules/annotate_phylogeny.smk"
