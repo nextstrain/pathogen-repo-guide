@@ -2,9 +2,21 @@
 This part of the workflow handles running Nextclade on the curated metadata
 and sequences.
 
+REQUIRED INPUTS:
+
+    metadata    = results/subset_metadata.tsv
+    sequences   = results/sequences.fasta
+
+OUTPUTS:
+
+    metadata        = results/metadata.tsv
+    nextclade       = results/nextclade.tsv
+    alignment       = results/alignment.fasta
+    translations    = results/translations.zip
+
 See Nextclade docs for more details on usage, inputs, and outputs if you would
 like to customize the rules:
-https://docs.nextstrain.org/projects/nextclade/en/stable/user/nextclade-cli.html
+https://docs.nextstrain.org/projects/nextclade/page/user/nextclade-cli.html
 """
 DATASET_NAME = config["nextclade"]["dataset_name"]
 

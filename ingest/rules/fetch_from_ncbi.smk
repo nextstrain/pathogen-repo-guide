@@ -1,19 +1,27 @@
 """
-This part of the workflow handles fetching sequences and metadata from NCBI
-and outputs them as a single NDJSON file that can be directly fed into the
-curation pipeline.
+This part of the workflow handles fetching sequences and metadata from NCBI.
+
+REQUIRED INPUTS:
+
+    None
+
+OUTPUTS:
+
+    ndjson = data/ncbi.ndjson
 
 There are two different approaches for fetching data from NCBI.
-Choose the one that works best for the pathogen data and edit the rule order at
-the top of the file to set the preferred approach.
+Choose the one that works best for the pathogen data and edit the workflow config
+to provide the correct parameter.
 
 1. Fetch with NCBI Datasets (https://www.ncbi.nlm.nih.gov/datasets/)
+    - requires `ncbi_taxon_id` config
     - Directly returns NDJSON without custom parsing
     - Fastest option for large datasets (e.g. SARS-CoV-2)
     - Only returns metadata fields that are available through NCBI Datasets
     - Only works for viral genomes
 
 2. Fetch from Entrez (https://www.ncbi.nlm.nih.gov/books/NBK25501/)
+    - requires `entrez_search_term` config
     - Returns all available data via a GenBank file
     - Requires a custom script to parse the necessary fields from the GenBank file
 """
