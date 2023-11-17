@@ -129,7 +129,7 @@ rule format_ncbi_dataset_report:
         ncbi_dataset_tsv=temp("data/ncbi_dataset_report.tsv"),
     params:
         fields_to_include=_get_ncbi_dataset_field_mnemonics(
-            config["ncbi_dataset_fields"]
+            config.get("ncbi_dataset_fields", [])
         ),
     benchmark:
         "benchmarks/format_ncbi_dataset_report.txt"
