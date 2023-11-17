@@ -1,9 +1,15 @@
 """
-This part of the workflow handles the curation of metadata for sequences
-from NCBI and outputs the clean data as two separate files:
+This part of the workflow handles the curation of data from NCBI
 
-    - results/subset_metadata.tsv
-    - results/sequences.fasta
+REQUIRED INPUTS:
+
+    ndjson      = data/ncbi.ndjson
+
+OUTPUTS:
+
+    metadata    = results/subset_metadata.tsv
+    seuqences   = results/sequences.fasta
+
 """
 
 

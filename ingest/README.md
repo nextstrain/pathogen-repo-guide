@@ -34,6 +34,14 @@ The modules of the workflow are in separate files to keep the main ingest [Snake
 Modules are all [included](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#includes)
 in the main Snakefile in the order that they are expected to run.
 
+## Profiles
+
+The profiles directory contains custom configs and rules that override and/or
+extend the default workflow.
+
+- [nextstrain_automation](profiles/nextstrain_automation/) - profile for the internal automated Nextstrain builds.
+
+
 ## Vendored
 
 This repository uses [`git subrepo`](https://github.com/ingydotnet/git-subrepo)

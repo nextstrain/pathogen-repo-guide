@@ -2,14 +2,22 @@
 This part of the workflow prepares sequences for constructing the reference tree
 of the Nextclade dataset.
 
-This usually includes the following steps:
+REQUIRED INPUTS:
 
-    - filtering
-    - subsampling
-    - indexing
-    - aligning
-    - masking
+    metadata    = data/metadata.tsv
+    sequences   = data/sequences.fasta
+    reference   = ../shared/reference.fasta
 
-This part of the workflow expects a metadata and FASTA file as inputs
-and will produce a FASTA file of prepared sequences as an output.
+OUTPUTS:
+
+    prepared_sequences = results/prepared_sequences.fasta
+
+This part of the workflow usually includes the following steps:
+
+    - augur index
+    - augur filter
+    - nextclade run
+    - augur mask
+
+See Nextclade's and Augur's usage docs for these commands for more details.
 """

@@ -1,60 +1,38 @@
 """
-This part of the workflow handles fetching sequences and metadata from NCBI
-and outputs them as a single NDJSON file that can be directly fed into the
-curation pipeline.
+This part of the workflow handles fetching sequences and metadata from NCBI.
+
+REQUIRED INPUTS:
+
+    None
+
+OUTPUTS:
+
+    ndjson = data/ncbi.ndjson
 
 There are two different approaches for fetching data from NCBI.
-Choose the one that works best for the pathogen data and remove the rules related
-to the other approaches.
+Choose the one that works best for the pathogen data and edit the workflow config
+to provide the correct parameter.
 
-1. Fetch from Entrez (https://www.ncbi.nlm.nih.gov/books/NBK25501/)
-    - Returns all available data via a GenBank file
-    - Requires a custom script to parse the necessary fields from the GenBank file
-
-2. Fetch with NCBI Datasets (https://www.ncbi.nlm.nih.gov/datasets/)
+1. Fetch with NCBI Datasets (https://www.ncbi.nlm.nih.gov/datasets/)
+    - requires `ncbi_taxon_id` config
     - Directly returns NDJSON without custom parsing
     - Fastest option for large datasets (e.g. SARS-CoV-2)
     - Only returns metadata fields that are available through NCBI Datasets
-    - Example is written for viral data, please see offical NCBI Datasets docs for other genomes
+    - Only works for viral genomes
+
+2. Fetch from Entrez (https://www.ncbi.nlm.nih.gov/books/NBK25501/)
+    - requires `entrez_search_term` config
+    - Returns all available data via a GenBank file
+    - Requires a custom script to parse the necessary fields from the GenBank file
 """
 
-###########################################################################
-########################## 1. Fetch from Entrez ###########################
-###########################################################################
-
-
-rule fetch_from_ncbi_entrez:
-    params:
-        term=config["entrez_search_term"],
-    output:
-        genbank="data/genbank.gb",
-    # Allow retries in case of network errors
-    retries: 5
-    benchmark:
-        "benchmarks/fetch_from_ncbi_entrez.txt"
-    shell:
-        """
-        vendored/fetch-from-ncbi-entrez \
-            --term {params.term:q} \
-            --output {output.genbank}
-        """
-
-
-rule parse_genbank_to_ndjson:
-    input:
-        genbank="data/genbank.gb",
-    output:
-        ndjson="data/ncbi.ndjson",
-    benchmark:
-        "benchmarks/parse_genbank_to_ndjson.txt"
-    shell:
-        """
-        # Add in custom script to parse needed fields from GenBank file to NDJSON file
-        """
-
+# This ruleorder determines which rule to use to produce the final NCBI NDJSON file.
+# The default is set to use NCBI Datasets since it does no require a custom script.
+# Switch the rule order if you plan to use Entrez
+ruleorder: format_ncbi_datasets_ndjson > parse_genbank_to_ndjson
 
 ###########################################################################
-####################### 2. Fetch from NCBI Datasets #######################
+####################### 1. Fetch from NCBI Datasets #######################
 ###########################################################################
 
 
@@ -129,7 +107,7 @@ rule format_ncbi_dataset_report:
         ncbi_dataset_tsv=temp("data/ncbi_dataset_report.tsv"),
     params:
         fields_to_include=_get_ncbi_dataset_field_mnemonics(
-            config["ncbi_dataset_fields"]
+            config.get("ncbi_dataset_fields", [])
         ),
     benchmark:
         "benchmarks/format_ncbi_dataset_report.txt"
@@ -166,4 +144,39 @@ rule format_ncbi_datasets_ndjson:
             --unmatched-reporting warn \
             --duplicate-reporting warn \
             2> {log} > {output.ndjson}
+        """
+
+
+###########################################################################
+########################## 2. Fetch from Entrez ###########################
+###########################################################################
+
+
+rule fetch_from_ncbi_entrez:
+    params:
+        term=config["entrez_search_term"],
+    output:
+        genbank="data/genbank.gb",
+    # Allow retries in case of network errors
+    retries: 5
+    benchmark:
+        "benchmarks/fetch_from_ncbi_entrez.txt"
+    shell:
+        """
+        vendored/fetch-from-ncbi-entrez \
+            --term {params.term:q} \
+            --output {output.genbank}
+        """
+
+
+rule parse_genbank_to_ndjson:
+    input:
+        genbank="data/genbank.gb",
+    output:
+        ndjson="data/ncbi.ndjson",
+    benchmark:
+        "benchmarks/parse_genbank_to_ndjson.txt"
+    shell:
+        """
+        # Add in custom script to parse needed fields from GenBank file to NDJSON file
         """

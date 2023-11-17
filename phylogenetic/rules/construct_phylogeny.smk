@@ -1,9 +1,20 @@
 """
 This part of the workflow constructs the phylogenetic tree.
 
-This part of the workflow expects a single aligned FASTA file.
-If constructing a time-resolved tree, it will also require a metadata file
-that includes a sample date for each sequence.
+REQUIRED INPUTS:
 
-This will produce a Newick tree and a branch lengths JSON file.
+    metadata            = data/metadata.tsv
+    prepared_sequences  = results/prepared_sequences.fasta
+
+OUTPUTS:
+
+    tree            = results/tree.nwk
+    branch_lengths  = results/branch_lengths.json
+
+This part of the workflow usually includes the following steps:
+
+    - augur tree
+    - augur refine
+
+See Augur's usage docs for these commands for more details.
 """
