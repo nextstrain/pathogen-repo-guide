@@ -7,17 +7,18 @@ If you have another data source or private data that needs to be formatted for
 the phylogenetic workflow, then you can use a similar workflow to curate your
 own data.
 
-## Run
+## Workflow Usage
 
-From within the `ingest` directory, run the workflow with:
+All workflows are expected to the be run from the top level pathogen repo directory.
+The default ingest workflow should be run with
 
 ```
-nextstrain build .
+nextstrain build . -s ingest/Snakefile
 ```
+This produces the default outputs of the ingest workflow:
 
-This produces a `results` directory with the following outputs:
-- sequences.fasta
-- metadata.tsv
+- metadata      = ingest/results/metadata.tsv
+- sequences     = ingest/results/sequences.fasta
 
 ## Defaults
 
@@ -31,6 +32,10 @@ options to override these default values.
 
 The rules directory contains separate Snakefiles (`*.smk`) as modules of the core ingest workflow.
 The modules of the workflow are in separate files to keep the main ingest [Snakefile](Snakefile) succinct and organized.
+
+The `workdir` is hardcoded to be the ingest directory so all filepaths for
+inputs/outputs should be relative to the ingest directory.
+
 Modules are all [included](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#includes)
 in the main Snakefile in the order that they are expected to run.
 

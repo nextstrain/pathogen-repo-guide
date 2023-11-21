@@ -2,6 +2,8 @@
 This is the main Nextclade Snakefile that orchestrates the workflow to produce
 a Nextclade dataset.
 """
+# The workflow filepaths are written relative to this Snakefile's base directory
+workdir: workflow.current_basedir
 
 # Use default configuration values. Override with Snakemake's --configfile/--config options.
 configfile: "defaults/config.yaml"
