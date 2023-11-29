@@ -67,55 +67,22 @@ rule extract_ncbi_dataset_sequences:
         """
 
 
-def _get_ncbi_dataset_field_mnemonics(provided_fields: list) -> str:
-    """
-    Return list of NCBI Dataset report field mnemonics for fields that we want
-    to parse out of the dataset report. The column names in the output TSV
-    are different from the mnemonics.
-
-    Additional *provided_fields* will be appended to the end of the list.
-
-    See NCBI Dataset docs for full list of available fields and their column
-    names in the output:
-    https://www.ncbi.nlm.nih.gov/datasets/docs/v2/reference-docs/command-line/dataformat/tsv/dataformat_tsv_virus-genome/#fields
-    """
-    fields = [
-        "accession",
-        "sourcedb",
-        "sra-accs",
-        "isolate-lineage",
-        "geo-region",
-        "geo-location",
-        "isolate-collection-date",
-        "release-date",
-        "update-date",
-        "length",
-        "host-name",
-        "isolate-lineage-source",
-        "biosample-acc",
-        "submitter-names",
-        "submitter-affiliation",
-        "submitter-country",
-    ]
-    return ",".join(fields + provided_fields)
-
-
 rule format_ncbi_dataset_report:
     input:
         dataset_package="data/ncbi_dataset.zip",
     output:
         ncbi_dataset_tsv=temp("data/ncbi_dataset_report.tsv"),
     params:
-        fields_to_include=_get_ncbi_dataset_field_mnemonics(
-            config.get("ncbi_dataset_fields", [])
-        ),
+        ncbi_datasets_fields=",".join(config["ncbi_datasets_fields"]),
     benchmark:
         "benchmarks/format_ncbi_dataset_report.txt"
     shell:
         """
         dataformat tsv virus-genome \
             --package {input.dataset_package} \
-            --fields {params.fields_to_include:q} \
+            --fields {params.ncbi_datasets_fields:q} \
+            --elide-header \
+            | csvtk add-header -t -n {params.ncbi_datasets_fields:q} \
             > {output.ncbi_dataset_tsv}
         """
 
@@ -139,7 +106,7 @@ rule format_ncbi_datasets_ndjson:
         augur curate passthru \
             --metadata {input.ncbi_dataset_tsv} \
             --fasta {input.ncbi_dataset_sequences} \
-            --seq-id-column Accession \
+            --seq-id-column accession \
             --seq-field sequence \
             --unmatched-reporting warn \
             --duplicate-reporting warn \
