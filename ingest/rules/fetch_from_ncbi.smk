@@ -82,7 +82,7 @@ rule format_ncbi_dataset_report:
             --package {input.dataset_package} \
             --fields {params.ncbi_datasets_fields:q} \
             --elide-header \
-            | csvtk add-header -t -n {params.ncbi_datasets_fields:q} \
+            | csvtk add-header -t -l -n {params.ncbi_datasets_fields:q} \
             > {output.ncbi_dataset_tsv}
         """
 
