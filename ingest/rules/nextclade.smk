@@ -29,7 +29,7 @@ rule get_nextclade_dataset:
         dataset_name=DATASET_NAME
     shell:
         """
-        nextclade dataset get \
+        nextclade2 dataset get \
             --name={params.dataset_name:q} \
             --output-zip={output.dataset} \
             --verbose
@@ -50,7 +50,7 @@ rule run_nextclade:
         translations=lambda w: "results/translations/{gene}.fasta",
     shell:
         """
-        nextclade run \
+        nextclade2 run \
             {input.sequences} \
             --input-dataset {input.dataset} \
             --output-tsv {output.nextclade} \
