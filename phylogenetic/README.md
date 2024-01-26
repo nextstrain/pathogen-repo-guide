@@ -28,11 +28,11 @@ The modules of the workflow are in separate files to keep the main ingest [Snake
 Modules are all [included](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#includes)
 in the main Snakefile in the order that they are expected to run.
 
-## Profiles
+## Build configs
 
-The profiles directory contains custom configs and rules that override and/or
+The build-configs directory contains custom configs and rules that override and/or
 extend the default workflow.
 
-- [ci](profiles/ci/) - profile for the CI build that runs with example data
+- [ci](build-configs/ci/) - CI build that runs with example data
 
 [Nextstrain datasets]: https://docs.nextstrain.org/en/latest/reference/glossary.html#term-dataset

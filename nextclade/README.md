@@ -20,3 +20,10 @@ The rules directory contains separate Snakefiles (`*.smk`) as modules of the cor
 The modules of the workflow are in separate files to keep the main ingest [Snakefile](Snakefile) succinct and organized.
 Modules are all [included](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#includes)
 in the main Snakefile in the order that they are expected to run.
+
+## Build configs
+
+The build-configs directory contains custom configs and rules that override and/or
+extend the default workflow.
+
+- [test_dataset](build-configs/test_dataset/) - build to test new Nextclade dataset

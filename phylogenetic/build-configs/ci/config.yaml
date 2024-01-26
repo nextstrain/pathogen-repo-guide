@@ -4,4 +4,4 @@
 # Custom rules to run as part of the CI automated workflow
 # The paths should be relative to the phylogenetic directory.
 custom_rules:
-  - profiles/ci/copy_example_data.smk
+  - build-configs/ci/copy_example_data.smk
