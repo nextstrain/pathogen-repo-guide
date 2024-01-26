@@ -6,11 +6,11 @@ The new standard would be to include the Nextclade workflow within the pathogen 
 This workflow is used to create the Nextclade datasets for this pathogen.
 All official Nextclade datasets are available at https://github.com/nextstrain/nextclade_data.
 
-## Config
+## Defaults
 
-The config directory contains all of the default configurations for the Nextclade workflow.
+The defaults directory contains all of the default configurations for the Nextclade workflow.
 
-[config/defaults.yaml](config/defaults.yaml) contains all of the default configuration parameters
+[defaults/config.yaml](defaults/config.yaml) contains all of the default configuration parameters
 used for the Nextclade workflow. Use Snakemake's `--configfile`/`--config`
 options to override these default values.
 

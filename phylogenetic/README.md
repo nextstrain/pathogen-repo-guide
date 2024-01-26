@@ -13,11 +13,11 @@ desired data formatting and curations as part of the [ingest](../ingest/) workfl
 2. The `date` column in the metadata must be in ISO 8601 date format (i.e. YYYY-MM-DD).
 3. Ambiguous dates should be masked with `XX` (e.g. 2023-01-XX).
 
-## Config
+## Defaults
 
-The config directory contains all of the default configurations for the phylogenetic workflow.
+The defaults directory contains all of the default configurations for the phylogenetic workflow.
 
-[config/defaults.yaml](config/defaults.yaml) contains all of the default configuration parameters
+[defaults/config.yaml](defaults/config.yaml) contains all of the default configuration parameters
 used for the phylogenetic workflow. Use Snakemake's `--configfile`/`--config`
 options to override these default values.
 
