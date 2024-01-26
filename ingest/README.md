@@ -39,7 +39,7 @@ in the main Snakefile in the order that they are expected to run.
 The build-configs directory contains custom configs and rules that override and/or
 extend the default workflow.
 
-- [nextstrain_automation](build-configs/nextstrain_automation/) - automated internal Nextstrain builds.
+- [nextstrain-automation](build-configs/nextstrain-automation/) - automated internal Nextstrain builds.
 
 
 ## Vendored

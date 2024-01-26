@@ -26,4 +26,4 @@ in the main Snakefile in the order that they are expected to run.
 The build-configs directory contains custom configs and rules that override and/or
 extend the default workflow.
 
-- [test_dataset](build-configs/test_dataset/) - build to test new Nextclade dataset
+- [test-dataset](build-configs/test-dataset/) - build to test new Nextclade dataset
