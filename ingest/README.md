@@ -19,11 +19,11 @@ This produces a `results` directory with the following outputs:
 - sequences.fasta
 - metadata.tsv
 
-## Config
+## Defaults
 
-The config directory contains all of the default configurations for the ingest workflow.
+The defaults directory contains all of the default configurations for the ingest workflow.
 
-[config/defaults.yaml](config/defaults.yaml) contains all of the default configuration parameters
+[defaults/config.yaml](defaults/config.yaml) contains all of the default configuration parameters
 used for the ingest workflow. Use Snakemake's `--configfile`/`--config`
 options to override these default values.
 
@@ -34,12 +34,12 @@ The modules of the workflow are in separate files to keep the main ingest [Snake
 Modules are all [included](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#includes)
 in the main Snakefile in the order that they are expected to run.
 
-## Profiles
+## Build configs
 
-The profiles directory contains custom configs and rules that override and/or
+The build-configs directory contains custom configs and rules that override and/or
 extend the default workflow.
 
-- [nextstrain_automation](profiles/nextstrain_automation/) - profile for the internal automated Nextstrain builds.
+- [nextstrain-automation](build-configs/nextstrain-automation/) - automated internal Nextstrain builds.
 
 
 ## Vendored

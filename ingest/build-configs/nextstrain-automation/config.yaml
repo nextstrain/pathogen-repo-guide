@@ -4,7 +4,7 @@
 # Custom rules to run as part of the Nextstrain automated workflow
 # The paths should be relative to the ingest directory.
 custom_rules:
-  - profiles/nextstrain_automation/upload.smk
+  - build-configs/nextstrain-automation/upload.smk
 
 # Nextstrain CloudFront domain to ensure that we invalidate CloudFront after the S3 uploads
 # This is required as long as we are using the AWS CLI for uploads

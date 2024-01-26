@@ -4,7 +4,7 @@ a Nextclade dataset.
 """
 
 # Use default configuration values. Override with Snakemake's --configfile/--config options.
-configfile: "config/defaults.yaml"
+configfile: "defaults/config.yaml"
 
 # This is the default rule that Snakemake will run when there are no specified targets.
 # The default output of the Nextclade workflow is usually the produced Nextclade dataset.
