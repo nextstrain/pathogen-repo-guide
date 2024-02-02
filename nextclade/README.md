@@ -6,6 +6,18 @@ The new standard would be to include the Nextclade workflow within the pathogen 
 This workflow is used to create the Nextclade datasets for this pathogen.
 All official Nextclade datasets are available at https://github.com/nextstrain/nextclade_data.
 
+## Workflow Usage
+
+All workflows are expected to the be run from the top level pathogen repo directory.
+The default nextclade workflow should be run with
+
+```
+nextstrain build . -s nextclade/Snakefile
+```
+This produces the default outputs of the nextclade workflow:
+
+- nextclade_dataset(s) = nextclade/datasets/<build_name>/*
+
 ## Defaults
 
 The defaults directory contains all of the default configurations for the Nextclade workflow.
@@ -17,7 +29,11 @@ options to override these default values.
 ## Snakefile and rules
 
 The rules directory contains separate Snakefiles (`*.smk`) as modules of the core Nextclade workflow.
-The modules of the workflow are in separate files to keep the main ingest [Snakefile](Snakefile) succinct and organized.
+The modules of the workflow are in separate files to keep the main nextclade [Snakefile](Snakefile) succinct and organized.
+
+The `workdir` is hardcoded to be the nextclade directory so all filepaths for
+inputs/outputs should be relative to the nextclade directory.
+
 Modules are all [included](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#includes)
 in the main Snakefile in the order that they are expected to run.
 
