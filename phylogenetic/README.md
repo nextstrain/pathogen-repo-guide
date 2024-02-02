@@ -5,12 +5,17 @@ that can be visualized in Auspice.
 
 ## Workflow Usage
 
-All workflows are expected to the be run from the top level pathogen repo directory.
-The default phylogenetic workflow should be run with
+The workflow can be run from the top level pathogen repo directory:
+```
+nextstrain build phylogenetic
+```
 
+Alternatively, the workflow can also be run from within the phylogenetic directory:
 ```
-nextstrain build . -s phylogenetic/Snakefile
+cd phylogenetic
+nextstrain build .
 ```
+
 This produces the default outputs of the phylogenetic workflow:
 
 - auspice_json(s) = auspice/*.json

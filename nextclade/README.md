@@ -8,15 +8,20 @@ All official Nextclade datasets are available at https://github.com/nextstrain/n
 
 ## Workflow Usage
 
-All workflows are expected to the be run from the top level pathogen repo directory.
-The default nextclade workflow should be run with
+The workflow can be run from the top level pathogen repo directory:
+```
+nextstrain build nextclade
+```
 
+Alternatively, the workflow can also be run from within the nextclade directory:
 ```
-nextstrain build . -s nextclade/Snakefile
+cd nextclade
+nextstrain build .
 ```
+
 This produces the default outputs of the nextclade workflow:
 
-- nextclade_dataset(s) = nextclade/datasets/<build_name>/*
+- nextclade_dataset(s) = datasets/<build_name>/*
 
 ## Defaults
 
