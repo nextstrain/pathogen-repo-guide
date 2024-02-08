@@ -9,16 +9,21 @@ own data.
 
 ## Workflow Usage
 
-All workflows are expected to the be run from the top level pathogen repo directory.
-The default ingest workflow should be run with
+The workflow can be run from the top level pathogen repo directory:
+```
+nextstrain build ingest
+```
 
+Alternatively, the workflow can also be run from within the ingest directory:
 ```
-nextstrain build . -s ingest/Snakefile
+cd ingest
+nextstrain build .
 ```
+
 This produces the default outputs of the ingest workflow:
 
-- metadata      = ingest/results/metadata.tsv
-- sequences     = ingest/results/sequences.fasta
+- metadata      = results/metadata.tsv
+- sequences     = results/sequences.fasta
 
 ## Defaults
 
