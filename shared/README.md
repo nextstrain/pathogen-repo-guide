@@ -11,7 +11,7 @@ abundantly clear that updating files in this `shared` directory will affect mult
 
 Potential files that could be in this directory:
 - `clades.tsv` - clade definitions
-- `outliers.txt` - list of outliers to exclude
+- `exclude.txt` - list of sequences to exclude from builds
 - `lat_longs.tsv` - location coordinates
 - `mask.bed` - specific coordinates to mask in sequences
 - `reference.fasta` - reference sequence
