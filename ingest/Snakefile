@@ -47,7 +47,7 @@ else:
 
     rule create_final_metadata:
         input:
-            metadata="results/subset_metadata.tsv"
+            metadata="data/subset_metadata.tsv"
         output:
             metadata="results/metadata.tsv"
         shell:

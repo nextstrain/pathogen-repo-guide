@@ -4,7 +4,7 @@ and sequences.
 
 REQUIRED INPUTS:
 
-    metadata    = results/subset_metadata.tsv
+    metadata    = data/subset_metadata.tsv
     sequences   = results/sequences.fasta
 
 OUTPUTS:
@@ -64,7 +64,7 @@ rule run_nextclade:
 rule join_metadata_and_nextclade:
     input:
         nextclade="results/nextclade.tsv",
-        metadata="results/subset_metadata.tsv",
+        metadata="data/subset_metadata.tsv",
         nextclade_field_map=config["nextclade"]["field_map"],
     output:
         metadata="results/metadata.tsv",
