@@ -44,6 +44,26 @@ inputs/outputs should be relative to the ingest directory.
 Modules are all [included](https://snakemake.readthedocs.io/en/stable/snakefiles/modularization.html#includes)
 in the main Snakefile in the order that they are expected to run.
 
+### Nextclade
+
+Nextstrain is pushing to standardize ingest workflows with Nextclade runs to include Nextclade outputs in our publicly
+hosted data. However, if a Nextclade dataset does not already exist, it requires curated data as input, so we are making
+Nextclade steps optional here.
+
+If Nextclade config values are included, the Nextclade rules will create the final metadata TSV by joining the Nextclade
+output with the metadata. If Nextclade configs are not included, we rename the subset metadata TSV to the final metadata TSV.
+
+To run Nextclade rules, include the `defaults/nextclade_config.yaml` config file with:
+
+```
+nextstrain build ingest --configfile defaults/nextclade_config.yaml
+```
+
+> [!TIP]
+> If the Nextclade dataset is stable and you always want to run the Nextclade rules as part of ingest, we recommend
+moving the Nextclade related config parameters from the `defaults/nextclade_config.yaml` file to the default config file
+`defaults/config.yaml`.
+
 ## Build configs
 
 The build-configs directory contains custom configs and rules that override and/or
