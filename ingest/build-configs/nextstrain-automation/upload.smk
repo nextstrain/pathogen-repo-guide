@@ -20,7 +20,7 @@ send_notifications = (
 
 rule upload_to_s3:
     input:
-        file_to_upload=config["files_to_upload"][wildcards.remote_file],
+        file_to_upload=lambda wildcards: config["files_to_upload"][wildcards.remote_file],
     output:
         "results/upload/{remote_file}.upload",
     params:
