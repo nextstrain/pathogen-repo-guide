@@ -39,6 +39,8 @@ include: "rules/curate.smk"
 # final metadata TSV by joining the Nextclade output with the metadata.
 # If Nextclade configs are not included, we rename the subset metadata TSV
 # to the final metadata TSV.
+# To run nextclade.smk rules, include the `defaults/nextclade_config.yaml`
+# config file with `nextstrain build ingest --configfile defaults/nextclade_config.yaml`.
 if "nextclade" in config:
 
     include: "rules/nextclade.smk"
