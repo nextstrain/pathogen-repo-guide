@@ -25,6 +25,18 @@ This produces the default outputs of the ingest workflow:
 - metadata      = results/metadata.tsv
 - sequences     = results/sequences.fasta
 
+### Dumping the full raw metadata from NCBI Datasets
+
+The workflow has a target for dumping the full raw metadata from NCBI Datasets.
+
+```
+nextstrain build ingest dump_ncbi_dataset_report
+```
+
+This will produce the file `ingest/data/ncbi_dataset_report_raw.tsv`,
+which you can inspect to determine what fields and data to use if you want to
+configure the workflow for your pathogen.
+
 ## Defaults
 
 The defaults directory contains all of the default configurations for the ingest workflow.
