@@ -96,7 +96,12 @@ rule format_ncbi_dataset_report:
             --package {input.dataset_package} \
             --fields {params.ncbi_datasets_fields:q} \
             --elide-header \
+            | csvtk fix-quotes -Ht \
             | csvtk add-header -t -l -n {params.ncbi_datasets_fields:q} \
+            | csvtk rename -t -f accession -n accession_version \
+            | csvtk -t mutate -f accession_version -n accession -p "^(.+?)\." \
+            | csvtk del-quotes -t \
+            | tsv-select -H -f accession --rest last \
             > {output.ncbi_dataset_tsv}
         """
 
@@ -120,7 +125,7 @@ rule format_ncbi_datasets_ndjson:
         augur curate passthru \
             --metadata {input.ncbi_dataset_tsv} \
             --fasta {input.ncbi_dataset_sequences} \
-            --seq-id-column accession \
+            --seq-id-column accession_version \
             --seq-field sequence \
             --unmatched-reporting warn \
             --duplicate-reporting warn \
