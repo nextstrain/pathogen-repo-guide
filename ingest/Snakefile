@@ -10,9 +10,9 @@ configfile: "defaults/config.yaml"
 
 # This is the default rule that Snakemake will run when there are no specified targets.
 # The default output of the ingest workflow is usually the curated metadata and sequences.
-# Nextstrain maintained ingest workflows will produce metadata files with the
+# Nextstrain-maintained ingest workflows will produce metadata files with the
 # standard Nextstrain fields and additional fields that are pathogen specific.
-# We recommend use these standard fields in custom ingests as well to minimize
+# We recommend using these standard fields in custom ingests as well to minimize
 # the customizations you will need for the downstream phylogenetic workflow.
 # TODO: Add link to centralized docs on standard Nextstrain metadata fields
 rule all:
@@ -21,18 +21,18 @@ rule all:
         "results/metadata.tsv",
 
 
-# Note that only PATHOGEN level customizations should be added to these
+# Note that only PATHOGEN-level customizations should be added to these
 # core steps, meaning they are custom rules necessary for all builds of the pathogen.
-# If there are build specific customizations, they should be added with the
+# If there are build-specific customizations, they should be added with the
 # custom_rules imported below to ensure that the core workflow is not complicated
-# by build specific rules.
+# by build-specific rules.
 include: "rules/fetch_from_ncbi.smk"
 include: "rules/curate.smk"
 
 
 # We are pushing to standardize ingest workflows with Nextclade runs to include
 # Nextclade outputs in our publicly hosted data. However, if a Nextclade dataset
-# does not already exist, it requires curated data as input, so we are making
+# does not already exist, creating one requires curated data as input, so we are making
 # Nextclade steps optional here.
 #
 # If Nextclade config values are included, the nextclade rules will create the
@@ -60,7 +60,7 @@ else:
 # Allow users to import custom rules provided via the config.
 # This allows users to run custom rules that can extend or override the workflow.
 # A concrete example of using custom rules is the extension of the workflow with
-# rules to support the Nextstrain automation that upload files and send internal
+# rules to support the Nextstrain automation that uploads files and sends internal
 # Slack notifications.
 # For extensions, the user will have to specify the custom rule targets when
 # running the workflow.
