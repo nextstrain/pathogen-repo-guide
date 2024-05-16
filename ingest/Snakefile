@@ -32,7 +32,7 @@ include: "rules/curate.smk"
 
 # We are pushing to standardize ingest workflows with Nextclade runs to include
 # Nextclade outputs in our publicly hosted data. However, if a Nextclade dataset
-# does not already exist, it requires curated data as input, so we are making
+# does not already exist, creating one requires curated data as input, so we are making
 # Nextclade steps optional here.
 #
 # If Nextclade config values are included, the nextclade rules will create the
