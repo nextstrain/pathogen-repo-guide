@@ -10,7 +10,7 @@ configfile: "defaults/config.yaml"
 
 # This is the default rule that Snakemake will run when there are no specified targets.
 # The default output of the ingest workflow is usually the curated metadata and sequences.
-# Nextstrain maintained ingest workflows will produce metadata files with the
+# Nextstrain-maintained ingest workflows will produce metadata files with the
 # standard Nextstrain fields and additional fields that are pathogen specific.
 # We recommend use these standard fields in custom ingests as well to minimize
 # the customizations you will need for the downstream phylogenetic workflow.
@@ -21,11 +21,11 @@ rule all:
         "results/metadata.tsv",
 
 
-# Note that only PATHOGEN level customizations should be added to these
+# Note that only PATHOGEN-level customizations should be added to these
 # core steps, meaning they are custom rules necessary for all builds of the pathogen.
-# If there are build specific customizations, they should be added with the
+# If there are build-specific customizations, they should be added with the
 # custom_rules imported below to ensure that the core workflow is not complicated
-# by build specific rules.
+# by build-specific rules.
 include: "rules/fetch_from_ncbi.smk"
 include: "rules/curate.smk"
 
