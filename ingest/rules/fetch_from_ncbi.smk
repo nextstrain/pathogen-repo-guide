@@ -27,7 +27,7 @@ to provide the correct parameter.
 """
 
 # This ruleorder determines which rule to use to produce the final NCBI NDJSON file.
-# The default is set to use NCBI Datasets since it does no require a custom script.
+# The default is set to use NCBI Datasets since it does not require a custom script.
 # Switch the rule order if you plan to use Entrez
 ruleorder: format_ncbi_datasets_ndjson > parse_genbank_to_ndjson
 

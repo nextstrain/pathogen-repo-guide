@@ -12,7 +12,7 @@ configfile: "defaults/config.yaml"
 # The default output of the ingest workflow is usually the curated metadata and sequences.
 # Nextstrain-maintained ingest workflows will produce metadata files with the
 # standard Nextstrain fields and additional fields that are pathogen specific.
-# We recommend use these standard fields in custom ingests as well to minimize
+# We recommend using these standard fields in custom ingests as well to minimize
 # the customizations you will need for the downstream phylogenetic workflow.
 # TODO: Add link to centralized docs on standard Nextstrain metadata fields
 rule all:
@@ -60,7 +60,7 @@ else:
 # Allow users to import custom rules provided via the config.
 # This allows users to run custom rules that can extend or override the workflow.
 # A concrete example of using custom rules is the extension of the workflow with
-# rules to support the Nextstrain automation that upload files and send internal
+# rules to support the Nextstrain automation that uploads files and sends internal
 # Slack notifications.
 # For extensions, the user will have to specify the custom rule targets when
 # running the workflow.
