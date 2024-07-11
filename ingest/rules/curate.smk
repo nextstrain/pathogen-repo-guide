@@ -8,7 +8,7 @@ REQUIRED INPUTS:
 OUTPUTS:
 
     metadata    = data/subset_metadata.tsv
-    seuqences   = results/sequences.fasta
+    sequences   = results/sequences.fasta
 
 """
 
