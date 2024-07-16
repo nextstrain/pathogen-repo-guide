@@ -6,7 +6,7 @@ nextclade:
   dataset_name: ""
   # Path to the mapping for renaming Nextclade output columns
   # The path should be relative to the ingest directory
-  field_map: "config/nextclade_field_map.tsv"
+  field_map: "defaults/nextclade_field_map.tsv"
   # This is the ID field you would use to match the Nextclade output with the record metadata.
   # This should be the new name that you have defined in your field map.
   id_field: "seqName"

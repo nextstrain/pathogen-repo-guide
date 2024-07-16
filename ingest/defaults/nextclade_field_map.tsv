@@ -5,7 +5,6 @@
 # columns would be useful for your downstream phylogenetic analysis.
 seqName	seqName
 clade	clade
-lineage	lineage
 coverage	coverage
 totalMissing	missing_data
 totalSubstitutions	divergence

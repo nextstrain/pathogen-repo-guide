@@ -29,7 +29,7 @@ rule get_nextclade_dataset:
         dataset_name=DATASET_NAME
     shell:
         """
-        nextclade2 dataset get \
+        nextclade3 dataset get \
             --name={params.dataset_name:q} \
             --output-zip={output.dataset} \
             --verbose
@@ -47,10 +47,10 @@ rule run_nextclade:
     params:
         # The lambda is used to deactivate automatic wildcard expansion.
         # https://github.com/snakemake/snakemake/blob/384d0066c512b0429719085f2cf886fdb97fd80a/snakemake/rules.py#L997-L1000
-        translations=lambda w: "results/translations/{gene}.fasta",
+        translations=lambda w: "results/translations/{cds}.fasta",
     shell:
         """
-        nextclade2 run \
+        nextclade3 run \
             {input.sequences} \
             --input-dataset {input.dataset} \
             --output-tsv {output.nextclade} \
