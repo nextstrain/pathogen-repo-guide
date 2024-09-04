@@ -65,24 +65,21 @@ rule join_metadata_and_nextclade:
     input:
         nextclade="results/nextclade.tsv",
         metadata="data/subset_metadata.tsv",
-        nextclade_field_map=config["nextclade"]["field_map"],
     output:
         metadata="results/metadata.tsv",
     params:
         metadata_id_field=config["curate"]["output_id_field"],
         nextclade_id_field=config["nextclade"]["id_field"],
+        nextclade_field_map=[f"{old}={new}" for old, new in config["nextclade"]["field_map"].items()],
+        nextclade_fields=",".join(config["nextclade"]["field_map"].values()),
     shell:
         r"""
-        export SUBSET_FIELDS=`grep -v '^#' {input.nextclade_field_map} | awk '{{print $1}}' | tr '\n' ',' | sed 's/,$//g'`
-
-        csvtk -tl cut -f $SUBSET_FIELDS \
-            {input.nextclade} \
-        | csvtk -tl rename2 \
-            -F \
-            -f '*' \
-            -p '(.+)' \
-            -r '{{kv}}' \
-            -k {input.nextclade_field_map} \
+        augur curate rename \
+            --metadata {input.nextclade:q} \
+            --id-column {params.nextclade_id_field:q} \
+            --field-map {params.nextclade_field_map:q} \
+            --output-metadata - \
+        | tsv-select --header --fields {params.nextclade_fields:q} \
         | tsv-join -H \
             --filter-file - \
             --key-fields {params.nextclade_id_field} \
