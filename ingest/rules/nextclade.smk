@@ -72,7 +72,7 @@ rule join_metadata_and_nextclade:
         metadata_id_field=config["curate"]["output_id_field"],
         nextclade_id_field=config["nextclade"]["id_field"],
     shell:
-        """
+        r"""
         export SUBSET_FIELDS=`grep -v '^#' {input.nextclade_field_map} | awk '{{print $1}}' | tr '\n' ',' | sed 's/,$//g'`
 
         csvtk -tl cut -f $SUBSET_FIELDS \
