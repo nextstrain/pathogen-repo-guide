@@ -26,6 +26,7 @@ ncbi_datasets_fields:
   - update-date
   - length
   - host-name
+  - is-lab-host
   - isolate-lineage-source
   - biosample-acc
   - submitter-names
@@ -57,6 +58,7 @@ curate:
     update-date: date_updated
     length: length
     host-name: host
+    is-lab-host: is_lab_host
     isolate-lineage-source: sample_type
     biosample-acc: biosample_accessions
     submitter-names: authors
@@ -112,6 +114,7 @@ curate:
     "location",
     "length",
     "host",
+    "is_lab_host",
     "date_released",
     "date_updated",
     "sra_accessions",
