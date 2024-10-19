@@ -4,19 +4,21 @@ export a reference tree and create the Nextclade dataset.
 
 REQUIRED INPUTS:
 
-    TODO: Confirm inputs for Nextclade v3
-    reference           = ../shared/reference.fasta
-    pathogen            = config/pathogen.json
-    genome_annotation   = config/genome_annotation.gff3
-    readme              = config/README.md
-    changelog           = config/CHANGELOG.md
-    metadata            = data/metadata.tsv
-    tree                = results/tree.nwk
-    branch_lengths      = results/branch_lengths.json
-    nt_muts             = results/nt_muts.json
-    aa_muts             = results/aa_muts.json
-    clades              = results/clades.json
+    augur export:
+        metadata            = data/metadata.tsv
+        tree                = results/tree.nwk
+        branch_lengths      = results/branch_lengths.json
+        nt_muts             = results/nt_muts.json
+        aa_muts             = results/aa_muts.json
+        clades              = results/clades.json
 
+    Nextclade dataset files:
+        reference           = ../shared/reference.fasta
+        pathogen            = config/pathogen.json
+        genome_annotation   = config/genome_annotation.gff3
+        readme              = config/README.md
+        changelog           = config/CHANGELOG.md
+        example_sequences   = config/sequence.fasta
 
 OUTPUTS:
 
