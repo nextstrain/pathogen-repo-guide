@@ -12,7 +12,7 @@ rule test_dataset:
         dataset_dir="datasets/{build_name}",
     shell:
         """
-        nextclade2 run \
+        nextclade3 run \
             {input.sequences} \
             --input-dataset {params.dataset_dir} \
             --output-all {output.outdir}
