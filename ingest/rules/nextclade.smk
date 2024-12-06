@@ -77,7 +77,7 @@ rule nextclade_metadata:
             --id-column {params.nextclade_id_field:q} \
             --field-map {params.nextclade_field_map:q} \
             --output-metadata - \
-        | tsv-select --header --fields {params.nextclade_fields:q} \
+        | csvtk cut -t --fields {params.nextclade_fields:q} \
         > {output.nextclade_metadata:q}
         """
 
