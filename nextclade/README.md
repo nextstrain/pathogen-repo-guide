@@ -6,6 +6,14 @@ The new standard would be to include the Nextclade workflow within the pathogen 
 This workflow is used to create the Nextclade datasets for this pathogen.
 All official Nextclade datasets are available at https://github.com/nextstrain/nextclade_data.
 
+> [!IMPORTANT]
+> We do not have a generalized nextclade workflow so the rules files are empty and
+> will need to be filled in with your own rules. We suggest that you go through the
+> [Nextclade dataset create guide](https://github.com/nextstrain/nextclade_data/blob/@/docs/dataset-creation-guide.md)
+> to understand how to create a Nextclade dataset from scratch. Then use
+> [mpox](https://github.com/nextstrain/mpox) as an example to create your own
+> nextclade workflow.
+
 ## Workflow Usage
 
 The workflow can be run from the top level pathogen repo directory:
