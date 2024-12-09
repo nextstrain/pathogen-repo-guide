@@ -9,10 +9,10 @@ All official Nextclade datasets are available at https://github.com/nextstrain/n
 > [!IMPORTANT]
 > We do not have a generalized nextclade workflow so the rules files are empty and
 > will need to be filled in with your own rules. We suggest that you go through the
-> [Nextclade dataset create guide](https://github.com/nextstrain/nextclade_data/blob/@/docs/dataset-creation-guide.md)
+> [Nextclade dataset creation guide](https://github.com/nextstrain/nextclade_data/blob/@/docs/dataset-creation-guide.md)
 > to understand how to create a Nextclade dataset from scratch. Then use
 > [mpox](https://github.com/nextstrain/mpox) as an example to create your own
-> nextclade workflow.
+> Nextclade workflow.
 
 ## Workflow Usage
 
