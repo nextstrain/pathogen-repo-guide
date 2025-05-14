@@ -13,11 +13,13 @@ OUTPUTS:
 """
 
 
-def format_field_map(field_map: dict[str, str]) -> str:
+def format_field_map(field_map: dict[str, str]) -> list[str]:
     """
-    Format dict to `"key1"="value1" "key2"="value2"...` for use in shell commands.
+    Format entries to the format expected by `augur curate --field-map`.
+    When used in a Snakemake shell block, the list is automatically expanded and
+    spaces are handled by quoted interpolation.
     """
-    return " ".join([f'"{key}"="{value}"' for key, value in field_map.items()])
+    return [f'{key}={value}' for key, value in field_map.items()]
 
 
 # This curate pipeline is based on existing pipelines for pathogen repos using NCBI data.
@@ -59,7 +61,7 @@ rule curate:
         """
         (cat {input.sequences_ndjson} \
             | augur curate rename \
-                --field-map {params.field_map} \
+                --field-map {params.field_map:q} \
             | augur curate normalize-strings \
             | augur curate transform-strain-name \
                 --strain-regex {params.strain_regex} \
