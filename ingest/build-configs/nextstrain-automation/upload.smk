@@ -27,13 +27,19 @@ rule upload_to_s3:
         quiet="" if send_notifications else "--quiet",
         s3_dst=config["s3_dst"],
         cloudfront_domain=config["cloudfront_domain"],
+    benchmark:
+        "benchmarks/upload_to_s3.txt"
+    log:
+        "logs/upload_to_s3.txt"
     shell:
-        """
+        r"""
+        exec &> >(tee {log:q})
+
         ./vendored/upload-to-s3 \
-            {params.quiet} \
+            {params.quiet:q} \
             {input.file_to_upload:q} \
             {params.s3_dst:q}/{wildcards.remote_file:q} \
-            {params.cloudfront_domain} 2>&1 | tee {output}
+            {params.cloudfront_domain:q}
         """
 
 
