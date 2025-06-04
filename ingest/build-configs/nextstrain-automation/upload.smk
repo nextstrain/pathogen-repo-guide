@@ -28,9 +28,9 @@ rule upload_to_s3:
         s3_dst=config["s3_dst"],
         cloudfront_domain=config["cloudfront_domain"],
     benchmark:
-        "benchmarks/upload_to_s3.txt"
+        "benchmarks/upload_to_s3/{remote_file}.txt"
     log:
-        "logs/upload_to_s3.txt"
+        "logs/upload_to_s3/{remote_file}.txt"
     shell:
         r"""
         exec &> >(tee {log:q})
