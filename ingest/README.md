@@ -82,12 +82,3 @@ The build-configs directory contains custom configs and rules that override and/
 extend the default workflow.
 
 - [nextstrain-automation](build-configs/nextstrain-automation/) - automated internal Nextstrain builds.
-
-
-## Vendored
-
-This repository uses [`git subrepo`](https://github.com/ingydotnet/git-subrepo)
-to manage copies of ingest scripts in [vendored](vendored), from [nextstrain/ingest](https://github.com/nextstrain/ingest).
-
-See [vendored/README.md](vendored/README.md#vendoring) for instructions on how to update
-the vendored scripts.
