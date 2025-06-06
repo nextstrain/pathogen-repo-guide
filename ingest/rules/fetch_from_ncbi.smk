@@ -171,7 +171,7 @@ rule fetch_from_ncbi_entrez:
         r"""
         exec &> >(tee {log:q})
 
-        vendored/fetch-from-ncbi-entrez \
+        {workflow.basedir}/../shared/vendored/scripts/fetch-from-ncbi-entrez \
             --term {params.term:q} \
             --output {output.genbank:q}
         """

@@ -15,3 +15,12 @@ Potential files that could be in this directory:
 - `lat_longs.tsv` - location coordinates
 - `mask.bed` - specific coordinates to mask in sequences
 - `reference.fasta` - reference sequence
+
+
+## Vendored
+
+This repository uses [`git subrepo`](https://github.com/ingydotnet/git-subrepo)
+to manage copies of shared scripts in [vendored](vendored), from [nextstrain/shared](https://github.com/nextstrain/shared).
+
+See [vendored/README.md](vendored/README.md#vendoring) for instructions on how to update
+the vendored scripts.
