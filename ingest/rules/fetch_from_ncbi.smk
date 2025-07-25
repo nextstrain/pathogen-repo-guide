@@ -26,11 +26,6 @@ to provide the correct parameter.
     - Requires a custom script to parse the necessary fields from the GenBank file
 """
 
-# This ruleorder determines which rule to use to produce the final NCBI NDJSON file.
-# The default is set to use NCBI Datasets since it does not require a custom script.
-# Switch the rule order if you plan to use Entrez
-ruleorder: format_ncbi_datasets_ndjson > parse_genbank_to_ndjson
-
 ###########################################################################
 ####################### 1. Fetch from NCBI Datasets #######################
 ###########################################################################
