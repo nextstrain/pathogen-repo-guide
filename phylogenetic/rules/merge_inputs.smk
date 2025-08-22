@@ -27,6 +27,33 @@ Example:
         input:
             metadata = input_metadata,
             sequences = input_sequences,
+
+NOTE: The included `merge_*` rules are written for single build workflows such
+as zika that do not use wildcards. You will need to edit the rules to support wildcards
+
+1. If your workflow needs wildcards for both metadata and sequences,
+e.g. serotypes for dengue, then you will need to edit the `output`, `log`, and
+`benchmark` paths both the `merge_metadata` and `merge_sequences` rules.
+The wildcards can then be directly used in the config for inputs:
+
+```yaml
+inputs:
+    - name: default
+      metadata: https://data.nextstrain.org/files/workflows/dengue/metadata_{serotype}.tsv.zst
+      sequences: https://data.nextstrain.org/files/workflows/dengue/sequences_{serotype}.fasta.zst
+
+```
+
+2. If your workflow only needs wildcards for sequences, e.g. segments for influenza,
+then you will only need to edit the paths for the `merge_sequences` rule.
+The wildcards can then be directly used in the config for inputs:
+
+```yaml
+inputs:
+    - name: default
+      metadata: s3://nextstrain-data-private/files/workflows/avian-flu/metadata.tsv.zst
+      sequences: s3://nextstrain-data-private/files/workflows/avian-flu/{segment}/sequences.fasta.zst
+```
 """
 
 
@@ -53,11 +80,11 @@ input_sources = _gather_inputs()
 
 def input_metadata(wildcards):
     inputs = [info['metadata'] for info in input_sources.values() if info.get('metadata', None)]
-    return inputs[0] if len(inputs)==1 else "results/metadata_merged.tsv"
+    return inputs[0] if len(inputs)==1 else rules.merge_metadata.output.metadata
 
 def input_sequences(wildcards):
     inputs = [info['sequences'] for info in input_sources.values() if info.get('sequences', None)]
-    return inputs[0] if len(inputs)==1 else "results/sequences_merged.fasta"
+    return inputs[0] if len(inputs)==1 else rules.merge_sequences.output.sequences
 
 rule merge_metadata:
     """
