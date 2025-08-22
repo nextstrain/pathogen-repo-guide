@@ -18,7 +18,7 @@ additional_inputs:
       sequences: <path-or-url>
 ```
 
-The merged inputs can then be accessed in any downstream rules with the functions
+The inputs can then be accessed in any downstream rules with the functions
 `input_metadata` and `input_sequences`.
 
 Example:
@@ -27,6 +27,18 @@ Example:
         input:
             metadata = input_metadata,
             sequences = input_sequences,
+
+The supported compressions for the inputs will vary depending on the number of inputs defined.
+
+1. For a single input source, the <path-or-url> will be directly referenced as
+the input in downstream rules. As such, the <path-or-url> can use any compression
+scheme that the downstream commands can handle.
+
+2. Multiple input sources are merged via `augur merge` and thus <path-or-url>
+can be compressed with any compression scheme which `augur merge` supports.
+The merged files are stored uncompressed so there's no need to worry about the
+compression support of downstream commands.
+
 
 NOTE: The included `merge_*` rules are written for single build workflows such
 as zika that do not use wildcards. You will need to edit the rules to support wildcards
