@@ -1,26 +1,34 @@
 """
-This part of the workflow merges inputs from any of:
-    curated NCBI dataset: via s3 remote
-    additional local data: via path to files
+This part of the workflow merges inputs based on what is defined in the config.
 
-based on what is defined in the config YAML file.
+The config dict is expected to have a top-level `inputs` list that defines the
+separate inputs' name, metadata, and sequences. Optionally, the config can have
+a top-level `additional-inputs` list that is used to define additional data that
+are combined with the default inputs:
 
-REQUIRED INPUTS:
+```yaml
+inputs:
+    - name: default
+      metadata: <path-or-url>
+      sequences: <path-or-url>
 
-    config.yaml  = defines input files within a dictionary in either 'inputs' or 'additional_inputs'
+additional_inputs:
+    - name: private
+      metadata: <path-or-url>
+      sequences: <path-or-url>
+```
 
-OUTPUTS:
+The merged inputs can then be accessed in any downstream rules with the functions
+`input_metadata` and `input_sequences`.
 
-    input_sequences = gathered and merged sequences
-    input_metadata  = gathered and merged metadata
+Example:
 
-
-This part of the workflow usually includes the following steps:
-
-    - Any transformation to match the columns of the tsv files
-    - Concatenation of the tsv and the sequences files
-
+    rule filter:
+        input:
+            metadata = input_metadata,
+            sequences = input_sequences,
 """
+
 
 def _gather_inputs():
     all_inputs = [*config['inputs'], *config.get('additional_inputs', [])]
@@ -80,7 +88,7 @@ rule merge_metadata:
 rule merge_sequences:
     """
     This rule should only be invoked if there are multiple defined sequences inputs
-    (config.inputs + config.additional_inputs) for this particular segment
+    (config.inputs + config.additional_inputs)
     """
     input:
         **{name: info['sequences'] for name,info in input_sources.items() if info.get('sequences', None)}
@@ -98,5 +106,3 @@ rule merge_sequences:
             --sequences {input:q} \
             --output-sequences {output.sequences:q}
         """
-
-# -------------------------------------------------------------------------------------------- #
