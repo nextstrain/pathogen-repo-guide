@@ -3,7 +3,7 @@ This part of the workflow constructs the phylogenetic tree.
 
 REQUIRED INPUTS:
 
-    metadata            = data/metadata.tsv
+    metadata            = input_metadata (defined by merge_inputs.smk)
     prepared_sequences  = results/prepared_sequences.fasta
 
 OUTPUTS:
