@@ -54,3 +54,16 @@ if "custom_rules" in config:
     for rule_file in config["custom_rules"]:
 
         include: rule_file
+
+TYPES = ['a', 'b']
+rule test_inputs:
+    input:
+        metadata = lambda w: expand(input_metadata(w), type=TYPES),
+        sequences = lambda w: expand(input_sequences(w), type=TYPES)
+    output:
+        touch("results/test_merge.txt")
+    shell:
+        """
+        echo {input.metadata:q}
+        echo {input.sequences:q}
+        """

@@ -3,3 +3,16 @@
 #
 # Define optional config parameters with their default values here so that users
 # do not have to dig through the workflows to figure out the default values
+inputs:
+   - name: local
+     metadata: "data/{type}/metadata.tsv"
+     sequences: "data/{type}/sequences.fasta"
+   - name: https
+     metadata: "https://data.nextstrain.org/files/workflows/rsv/{type}/metadata.tsv.gz"
+     sequences: "https://data.nextstrain.org/files/workflows/rsv/{type}/sequences.fasta.xz"
+   - name: s3
+     metadata: "s3://nextstrain-data/files/workflows/rsv/{type}/metadata.tsv.gz"
+     sequences: "s3://nextstrain-data/files/workflows/rsv/{type}/sequences.fasta.xz"
+
+
+strain_id_field: accession
