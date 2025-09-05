@@ -28,17 +28,8 @@ Example:
             metadata = input_metadata,
             sequences = input_sequences,
 
-The supported compressions for the inputs will vary depending on the number of inputs defined.
-
-1. For a single input source, the <path-or-url> will be directly referenced as
-the input in downstream rules. As such, the <path-or-url> can use any compression
-scheme that the downstream commands can handle.
-
-2. Multiple input sources are merged via `augur merge` and thus <path-or-url>
-can be compressed with any compression scheme which `augur merge` supports.
-The merged files are stored uncompressed so there's no need to worry about the
-compression support of downstream commands.
-
+Supports any of the compression formats that are supported by `augur read-file`,
+see <https://docs.nextstrain.org/projects/augur/page/usage/cli/read-file.html>
 
 NOTE: The included `merge_*` rules are written for single build workflows such
 as zika that do not use wildcards. You will need to edit the rules to support wildcards
@@ -67,6 +58,7 @@ inputs:
       sequences: s3://nextstrain-data-private/files/workflows/avian-flu/{segment}/sequences.fasta.zst
 ```
 """
+from pathlib import Path
 
 
 def _gather_inputs():
@@ -93,14 +85,82 @@ def _gather_inputs():
     return {el['name']: {k:(v if k=='name' else path_or_url(v)) for k,v in el.items()} for el in all_inputs}
 
 input_sources = _gather_inputs()
+_input_metadata = [info['metadata'] for info in input_sources.values() if info.get('metadata', None)]
+_input_sequences = [info['sequences'] for info in input_sources.values() if info.get('sequences', None)]
 
 def input_metadata(wildcards):
-    inputs = [info['metadata'] for info in input_sources.values() if info.get('metadata', None)]
-    return inputs[0] if len(inputs)==1 else rules.merge_metadata.output.metadata
+    return (
+        rules.decompress_metadata.output.metadata
+        if len(_input_metadata)==1
+        else rules.merge_metadata.output.metadata
+    )
 
 def input_sequences(wildcards):
-    inputs = [info['sequences'] for info in input_sources.values() if info.get('sequences', None)]
-    return inputs[0] if len(inputs)==1 else rules.merge_sequences.output.sequences
+    return (
+        rules.decompress_sequences.output.sequences
+        if len(_input_sequences)==1
+        else rules.merge_sequences.output.sequences
+    )
+
+
+def strip_compression_ext(input: str) -> str:
+    expected_compression_extensions = {
+        ".gz",
+        ".bz2",
+        ".xz",
+        ".zst",
+    }
+    input_path= Path(input)
+    return (
+        str(input_path.with_suffix(""))
+        if input_path.suffix in expected_compression_extensions
+        else input
+    )
+
+
+rule decompress_metadata:
+    """
+    This rule should only be invoked if there is a single metadata input to
+    ensure that we have a decompressed input for downstream rules to match
+    the output of rule.merge_metadata.
+    """
+    input:
+        metadata = _input_metadata[0],
+    output:
+        metadata = f"results/{strip_compression_ext(_input_metadata[0])}",
+    log:
+        "logs/decompress_metadata.txt",
+    benchmark:
+        "benchmarks/decompress_metadata.txt",
+    shell:
+        r"""
+        exec &> >(tee {log:q})
+
+        augur read-file {input.metadata:q} > {output.metadata:q}
+        """
+
+
+rule decompress_sequences:
+    """
+    This rule should only be invoked if there is a single sequences input to
+    ensure that we have a decompressed input for downstream rules to match
+    the output of rule.merge_sequences.
+    """
+    input:
+        sequences = _input_sequences[0],
+    output:
+        sequences = f"results/{strip_compression_ext(_input_sequences[0])}",
+    log:
+        "logs/decompress_sequences.txt",
+    benchmark:
+        "benchmarks/decompress_sequences.txt",
+    shell:
+        r"""
+        exec &> >(tee {log:q})
+
+        augur read-file {input.sequences:q} > {output.sequences:q}
+        """
+
 
 rule merge_metadata:
     """
