@@ -81,6 +81,10 @@ def _gather_inputs():
         raise InvalidConfigError("Names of inputs (config.inputs and config.additional_inputs) must be unique")
     if not all(['name' in i and ('sequences' in i or 'metadata' in i) for i in all_inputs]):
         raise InvalidConfigError("Each input (config.inputs and config.additional_inputs) must have a 'name' and 'metadata' and/or 'sequences'")
+    if not any(['metadata' in i for i in all_inputs]):
+        raise InvalidConfigError("At least one input must have 'metadata'")
+    if not any (['sequences' in i for i in all_inputs]):
+        raise InvalidConfigError("At least one input must have 'sequences'")
 
     available_keys = set(['name', 'metadata', 'sequences'])
     if any([len(set(el.keys())-available_keys)>0 for el in all_inputs]):
