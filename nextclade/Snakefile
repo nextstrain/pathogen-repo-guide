@@ -2,11 +2,12 @@
 This is the main Nextclade Snakefile that orchestrates the workflow to produce
 a Nextclade dataset.
 """
-# The workflow filepaths are written relative to this Snakefile's base directory
-workdir: workflow.current_basedir
+# Use default configuration values. Extend with Snakemake's --configfile/--config options.
+configfile: os.path.join(workflow.basedir, "defaults/config.yaml")
 
-# Use default configuration values. Override with Snakemake's --configfile/--config options.
-configfile: "defaults/config.yaml"
+# Use custom configuration from analysis directory (i.e. working dir), if any.
+if os.path.exists("config.yaml"):
+    configfile: "config.yaml"
 
 # This is the default rule that Snakemake will run when there are no specified targets.
 # The default output of the Nextclade workflow is usually the produced Nextclade dataset.
@@ -16,6 +17,10 @@ rule all:
     input:
         # Fill in paths to the final exported Nextclade dataset.
 
+
+# Shared Snakemake files with generic functions are shared across pathogens
+# Use `resolve_config_path` to resolve file paths for config files
+include: "../shared/vendored/snakemake/config.smk"
 
 # These rules are imported in the order that they are expected to run.
 # Each Snakefile will have documented inputs and outputs that should be kept as
@@ -46,4 +51,10 @@ include: "rules/export.smk"
 if "custom_rules" in config:
     for rule_file in config["custom_rules"]:
 
-        include: rule_file
+        # Relative custom rule paths in the config are relative to the analysis
+        # directory (i.e. the current working directory, or workdir, usually
+        # given by --directory), but the "include" directive treats relative
+        # paths as relative to the workflow (e.g. workflow.current_basedir).
+        # Convert to an absolute path based on the analysis/current directory
+        # to avoid this mismatch of expectations.
+        include: os.path.join(os.getcwd(), rule_file)
