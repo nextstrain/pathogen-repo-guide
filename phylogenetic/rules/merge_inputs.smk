@@ -1,6 +1,11 @@
 """
 This part of the workflow merges inputs based on what is defined in the config.
 
+OUTPUTS:
+
+    metadata  = "results/metadata.tsv"
+    sequences = "results/sequences.fasta"
+
 The config dict is expected to have a top-level `inputs` list that defines the
 separate inputs' name, metadata, and sequences. Optionally, the config can have
 a top-level `additional-inputs` list that is used to define additional data that
@@ -18,25 +23,15 @@ additional_inputs:
       sequences: <path-or-url>
 ```
 
-The inputs can then be accessed in any downstream rules with the functions
-`input_metadata` and `input_sequences`.
-
-Example:
-
-    rule filter:
-        input:
-            metadata = input_metadata,
-            sequences = input_sequences,
-
 Supports any of the compression formats that are supported by `augur read-file`,
 see <https://docs.nextstrain.org/projects/augur/page/usage/cli/read-file.html>
 
-NOTE: The included `merge_*` rules are written for single build workflows such
+NOTE: The included rules are written for single build workflows such
 as zika that do not use wildcards. You will need to edit the rules to support wildcards
 
 1. If your workflow needs wildcards for both metadata and sequences,
 e.g. serotypes for dengue, then you will need to edit the `output`, `log`, and
-`benchmark` paths both the `merge_metadata` and `merge_sequences` rules.
+`benchmark` paths of the metadata and sequences rules.
 The wildcards can then be directly used in the config for inputs:
 
 ```yaml
@@ -48,7 +43,7 @@ inputs:
 ```
 
 2. If your workflow only needs wildcards for sequences, e.g. segments for influenza,
-then you will only need to edit the paths for the `merge_sequences` rule.
+then you will only need to edit the paths for the sequences rules.
 The wildcards can then be directly used in the config for inputs:
 
 ```yaml
@@ -88,124 +83,102 @@ input_sources = _gather_inputs()
 _input_metadata = [info['metadata'] for info in input_sources.values() if info.get('metadata', None)]
 _input_sequences = [info['sequences'] for info in input_sources.values() if info.get('sequences', None)]
 
-def input_metadata(wildcards):
-    return (
-        rules.decompress_metadata.output.metadata
-        if len(_input_metadata)==1
-        else rules.merge_metadata.output.metadata
-    )
 
-def input_sequences(wildcards):
-    return (
-        rules.decompress_sequences.output.sequences
-        if len(_input_sequences)==1
-        else rules.merge_sequences.output.sequences
-    )
+if len(_input_metadata) == 1:
 
-
-def strip_compression_ext(input: str) -> str:
-    expected_compression_extensions = {
-        ".gz",
-        ".bz2",
-        ".xz",
-        ".zst",
-    }
-    input_path= Path(input)
-    return (
-        str(input_path.with_suffix(""))
-        if input_path.suffix in expected_compression_extensions
-        else input
-    )
-
-
-rule decompress_metadata:
-    """
-    This rule should only be invoked if there is a single metadata input to
-    ensure that we have a decompressed input for downstream rules to match
-    the output of rule.merge_metadata.
-    """
-    input:
-        metadata = _input_metadata[0],
-    output:
-        metadata = f"results/{strip_compression_ext(_input_metadata[0])}",
-    log:
-        "logs/decompress_metadata.txt",
-    benchmark:
-        "benchmarks/decompress_metadata.txt",
-    shell:
-        r"""
-        exec &> >(tee {log:q})
-
-        augur read-file {input.metadata:q} > {output.metadata:q}
+    rule decompress_metadata:
         """
-
-
-rule decompress_sequences:
-    """
-    This rule should only be invoked if there is a single sequences input to
-    ensure that we have a decompressed input for downstream rules to match
-    the output of rule.merge_sequences.
-    """
-    input:
-        sequences = _input_sequences[0],
-    output:
-        sequences = f"results/{strip_compression_ext(_input_sequences[0])}",
-    log:
-        "logs/decompress_sequences.txt",
-    benchmark:
-        "benchmarks/decompress_sequences.txt",
-    shell:
-        r"""
-        exec &> >(tee {log:q})
-
-        augur read-file {input.sequences:q} > {output.sequences:q}
+        This rule should only be invoked if there is a single metadata input to
+        ensure that we have a decompressed input for downstream rules to match
+        the output of rule.merge_metadata.
         """
+        input:
+            metadata = _input_metadata[0],
+        output:
+            metadata = "results/metadata.tsv",
+        log:
+            "logs/decompress_metadata.txt",
+        benchmark:
+            "benchmarks/decompress_metadata.txt",
+        shell:
+            r"""
+            exec &> >(tee {log:q})
 
+            augur read-file {input.metadata:q} > {output.metadata:q}
+            """
 
-rule merge_metadata:
-    """
-    This rule should only be invoked if there are multiple defined metadata inputs
-    (config.inputs + config.additional_inputs)
-    """
-    input:
-        **{name: info['metadata'] for name,info in input_sources.items() if info.get('metadata', None)}
-    params:
-        metadata = lambda w, input: list(map("=".join, input.items())),
-        id_field = config['strain_id_field'],
-    output:
-        metadata = "results/metadata_merged.tsv"
-    log:
-        "logs/merge_metadata.txt",
-    benchmark:
-        "benchmarks/merge_metadata.txt"
-    shell:
-        r"""
-        exec &> >(tee {log:q})
+else:
 
-        augur merge \
-            --metadata {params.metadata:q} \
-            --metadata-id-columns {params.id_field:q} \
-            --output-metadata {output.metadata:q}
+    rule merge_metadata:
         """
-
-rule merge_sequences:
-    """
-    This rule should only be invoked if there are multiple defined sequences inputs
-    (config.inputs + config.additional_inputs)
-    """
-    input:
-        **{name: info['sequences'] for name,info in input_sources.items() if info.get('sequences', None)}
-    output:
-        sequences = "results/sequences_merged.fasta"
-    log:
-        "logs/merge_sequences.txt",
-    benchmark:
-        "benchmarks/merge_sequences.txt"
-    shell:
-        r"""
-        exec &> >(tee {log:q})
-
-        augur merge \
-            --sequences {input:q} \
-            --output-sequences {output.sequences:q}
+        This rule should only be invoked if there are multiple defined metadata inputs
+        (config.inputs + config.additional_inputs)
         """
+        input:
+            **{name: info['metadata'] for name,info in input_sources.items() if info.get('metadata', None)}
+        params:
+            metadata = lambda w, input: list(map("=".join, input.items())),
+            id_field = config['strain_id_field'],
+        output:
+            metadata = "results/metadata.tsv"
+        log:
+            "logs/merge_metadata.txt",
+        benchmark:
+            "benchmarks/merge_metadata.txt"
+        shell:
+            r"""
+            exec &> >(tee {log:q})
+
+            augur merge \
+                --metadata {params.metadata:q} \
+                --metadata-id-columns {params.id_field:q} \
+                --output-metadata {output.metadata:q}
+            """
+
+
+if len(_input_sequences) == 1:
+
+    rule decompress_sequences:
+        """
+        This rule should only be invoked if there is a single sequences input to
+        ensure that we have a decompressed input for downstream rules to match
+        the output of rule.merge_sequences.
+        """
+        input:
+            sequences = _input_sequences[0],
+        output:
+            sequences = "results/sequences.fasta",
+        log:
+            "logs/decompress_sequences.txt",
+        benchmark:
+            "benchmarks/decompress_sequences.txt",
+        shell:
+            r"""
+            exec &> >(tee {log:q})
+
+            augur read-file {input.sequences:q} > {output.sequences:q}
+            """
+
+else:
+
+    rule merge_sequences:
+        """
+        This rule should only be invoked if there are multiple defined sequences inputs
+        (config.inputs + config.additional_inputs)
+        """
+        input:
+            **{name: info['sequences'] for name,info in input_sources.items() if info.get('sequences', None)}
+        output:
+            sequences = "results/sequences.fasta",
+        log:
+            "logs/merge_sequences.txt",
+        benchmark:
+            "benchmarks/merge_sequences.txt"
+        shell:
+            r"""
+            exec &> >(tee {log:q})
+
+            augur merge \
+                --sequences {input:q} \
+                --output-sequences {output.sequences:q}
+            """

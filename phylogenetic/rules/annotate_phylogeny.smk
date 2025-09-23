@@ -3,7 +3,7 @@ This part of the workflow creates additonal annotations for the phylogenetic tre
 
 REQUIRED INPUTS:
 
-    metadata            = input_metadata (defined by merge_inputs.smk)
+    metadata            = results/metadata.tsv
     prepared_sequences  = results/prepared_sequences.fasta
     tree                = results/tree.nwk
 

@@ -3,8 +3,8 @@ This part of the workflow prepares sequences for constructing the phylogenetic t
 
 REQUIRED INPUTS:
 
-    metadata    = input_metadata (defined by merge_inputs.smk)
-    sequences   = input_sequences (defined by merge_inputs.smk)
+    metadata    = results/metadata.tsv
+    sequences   = results/sequences.fasta
     reference   = ../shared/reference.fasta
 
 OUTPUTS:
