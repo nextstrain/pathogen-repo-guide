@@ -3,8 +3,8 @@ This part of the workflow merges inputs based on what is defined in the config.
 
 OUTPUTS:
 
-    metadata  = "results/metadata.tsv"
-    sequences = "results/sequences.fasta"
+    metadata  = results/metadata.tsv
+    sequences = results/sequences.fasta
 
 The config dict is expected to have a top-level `inputs` list that defines the
 separate inputs' name, metadata, and sequences. Optionally, the config can have
@@ -26,8 +26,8 @@ additional_inputs:
 Supports any of the compression formats that are supported by `augur read-file`,
 see <https://docs.nextstrain.org/projects/augur/page/usage/cli/read-file.html>
 
-NOTE: The included rules are written for single build workflows such
-as zika that do not use wildcards. You will need to edit the rules to support wildcards
+NOTE: The included rules are written for workflows that do not use wildcards
+for defining inputs such as zika. You will need to edit the rules to support wildcards
 
 1. If your workflow needs wildcards for both metadata and sequences,
 e.g. serotypes for dengue, then you will need to edit the `output`, `log`, and
@@ -62,7 +62,7 @@ def _gather_inputs():
     if len(all_inputs)==0:
         raise InvalidConfigError("Config must define at least one element in config.inputs or config.additional_inputs lists")
     if not all([isinstance(i, dict) for i in all_inputs]):
-        raise InvalidConfigError("All of the elements in config.inputs and config.additional_inputs lists must be dictionaries"
+        raise InvalidConfigError("All of the elements in config.inputs and config.additional_inputs lists must be dictionaries. "
             "If you've used a command line '--config' double check your quoting.")
     if len({i['name'] for i in all_inputs})!=len(all_inputs):
         raise InvalidConfigError("Names of inputs (config.inputs and config.additional_inputs) must be unique")
@@ -88,7 +88,7 @@ if len(_input_metadata) == 1:
 
     rule decompress_metadata:
         """
-        This rule should only be invoked if there is a single metadata input to
+        This rule is invoked when there is a single metadata input to
         ensure that we have a decompressed input for downstream rules to match
         the output of rule.merge_metadata.
         """
@@ -111,7 +111,7 @@ else:
 
     rule merge_metadata:
         """
-        This rule should only be invoked if there are multiple defined metadata inputs
+        This rule is invoked when there are multiple defined metadata inputs
         (config.inputs + config.additional_inputs)
         """
         input:
@@ -140,7 +140,7 @@ if len(_input_sequences) == 1:
 
     rule decompress_sequences:
         """
-        This rule should only be invoked if there is a single sequences input to
+        This rule is invoked when there is a single sequences input to
         ensure that we have a decompressed input for downstream rules to match
         the output of rule.merge_sequences.
         """
@@ -163,7 +163,7 @@ else:
 
     rule merge_sequences:
         """
-        This rule should only be invoked if there are multiple defined sequences inputs
+        This rule is invoked when there are multiple defined sequences inputs
         (config.inputs + config.additional_inputs)
         """
         input:
