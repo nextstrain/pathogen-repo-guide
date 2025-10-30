@@ -2,6 +2,9 @@
 This is the main ingest Snakefile that orchestrates the full ingest workflow
 and defines its default outputs.
 """
+# Utility functions shared across all workflows.
+include: "../shared/vendored/snakemake/config.smk"
+
 # The workflow filepaths are written relative to this Snakefile's base directory
 workdir: workflow.current_basedir
 
