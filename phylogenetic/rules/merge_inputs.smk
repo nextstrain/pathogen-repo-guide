@@ -32,7 +32,7 @@ Supports any of the compression formats that are supported by `augur read-file`,
 see <https://docs.nextstrain.org/projects/augur/page/usage/cli/read-file.html>
 
 NOTE: The included rules are written for workflows that do not use wildcards
-for defining inputs such as zika. You will need to edit the rules to support wildcards
+for defining inputs such as zika. You will need to edit the rules to support wildcards.
 
 1. If your workflow needs wildcards for both metadata and sequences,
 e.g. serotypes for dengue, then you will need to edit the `output`, `log`, and
@@ -43,9 +43,11 @@ The wildcards can then be directly used in the config for inputs:
 inputs:
     - name: default
       metadata: https://data.nextstrain.org/files/workflows/dengue/metadata_{serotype}.tsv.zst
+      id_field: accession
       sequences: https://data.nextstrain.org/files/workflows/dengue/sequences_{serotype}.fasta.zst
 
 ```
+Note: this does _not_ support different `id_field` per wildcard.
 
 2. If your workflow only needs wildcards for sequences, e.g. segments for influenza,
 then you will only need to edit the paths for the sequences rules.
@@ -55,6 +57,7 @@ The wildcards can then be directly used in the config for inputs:
 inputs:
     - name: default
       metadata: s3://nextstrain-data-private/files/workflows/avian-flu/metadata.tsv.zst
+      id_field: accession
       sequences: s3://nextstrain-data-private/files/workflows/avian-flu/{segment}/sequences.fasta.zst
 ```
 """
